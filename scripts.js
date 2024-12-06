@@ -1,24 +1,24 @@
-// Initialize AG Grid with the correct settings
-var gridOptions = {
-  columnDefs: [
-    { headerName: "Name", field: "Name", editable: true },
-    { headerName: "State", field: "State", editable: true },
-  ],
-  rowData: [
-    { Name: "Mike Johnson", State: "California" },
-    { Name: "Jim Green", State: "Texas" },
-    { Name: "Jim Green", State: "Florida" },
-  ],
-  defaultColDef: {
-    flex: 1,
-    minWidth: 100,
-    resizable: true,
-    sortable: true,
-    filter: true,
-  },
-  rowSelection: "single",
-  animateRows: true,
-};
+  // Initialize AG Grid with the correct settings
+  var gridOptions = {
+    columnDefs: [
+      { headerName: "Name", field: "Name", editable: true },
+      { headerName: "State", field: "State", editable: true },
+    ],
+    rowData: [
+      { Name: "Mike Johnson", State: "California" },
+      { Name: "Jim Green", State: "Texas" },
+      { Name: "Jim Green", State: "Florida" },
+    ],
+    defaultColDef: {
+      flex: 1,
+      minWidth: 100,
+      resizable: true,
+      sortable: true,
+      filter: true,
+    },
+    rowSelection: "single",
+    animateRows: true,
+  };
 
 // Wait until the DOM content is fully loaded before initializing AG Grid and adding event listeners
 document.addEventListener("DOMContentLoaded", function () {
@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (allNodes.length > 0) {
         gridOptions.api.applyTransaction({ remove: allNodes.map((node) => node.data) });
       } else {
+
       }
     } else {
       console.error("Grid API is not ready.");
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load the Google Charts package
   google.charts.load('current', { 'packages': ['geochart'], 'mapsApiKey': 'AIzaSyCrHu2RqNwhRGRCZtFhXVE6hh8KsAg7eKE' });
   google.charts.setOnLoadCallback(drawEmptyMap);
-// 
+ 
   // Function to draw an empty map initially
   function drawEmptyMap() {
     var data = google.visualization.arrayToDataTable([
@@ -135,6 +136,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Clear title part
+  document.getElementById("clearTitleButton").addEventListener("click", () => {
+    document.getElementById("mapTitle").value = "";
+    const titleContainer = document.getElementById("mapTitleContainer");
+    if (titleContainer) {
+      titleContainer.style.display = "none";
+    }
+  });
+
   // Function to generate a unique color for each person
   function getColor(index) {
     const colors = [
@@ -154,6 +164,67 @@ document.addEventListener("DOMContentLoaded", function () {
     exportContent.appendChild(mapDiv.cloneNode(true));
 
     html2pdf().from(exportContent).save();
+  });
+
+  // export to png file
+  document.getElementById('exportPngButton').addEventListener('click', function () {
+    const mapTitleContainer = document.getElementById("mapTitleContainer");
+    const mapDiv = document.getElementById("map_div");
+
+    // Create a temporary wrapper to hold both title and map
+    const exportContent = document.createElement("div");
+    exportContent.appendChild(mapTitleContainer.cloneNode(true));
+    exportContent.appendChild(mapDiv.cloneNode(true));
+    
+      // Append the exportContent to the body
+      document.body.appendChild(exportContent);
+
+    setTimeout(() => {
+      domtoimage.toPng(exportContent)
+        .then(function (dataUrl) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = 'exported-image.png';
+            link.click();
+        })
+        .catch(function (error) {
+            console.error('oops, something went wrong!', error);
+        })
+        .finally(() => {
+          document.body.removeChild(exportContent);
+        })
+    } , 1000)
+  });
+
+  // export to svg file
+  document.getElementById('exportSvgButton').addEventListener('click', function () {
+    const mapTitleContainer = document.getElementById("mapTitleContainer");
+    const mapDiv = document.getElementById("map_div");
+
+    // Create a temporary wrapper to hold both title and map
+    const exportContent = document.createElement("div");
+    exportContent.appendChild(mapTitleContainer.cloneNode(true));
+    exportContent.appendChild(mapDiv.cloneNode(true));
+    
+     // Append the exportContent to the body
+     document.body.appendChild(exportContent);
+
+    setTimeout(() => {
+      domtoimage.toSvg(exportContent)
+        .then(function (dataUrl) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = 'exported-image.svg';
+            link.click();
+        })
+        .catch(function (error) {
+            console.error('oops, something went wrong!', error);
+        })
+        .finally(() => {
+          document.body.removeChild(exportContent);
+        })
+    }, 1000);
+    
   });
 
   // Add row functionality
@@ -188,4 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
   });
+
 });
+
+

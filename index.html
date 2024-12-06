@@ -1,40 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coverage Map</title>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coverage Map</title>
 
-    <!-- Google Charts -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- custom css-->
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- AG Grid Community CSS and JS -->
-    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css" />
-    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css" />
-    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+  <!-- Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <!-- PapaParse for CSV parsing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <!-- AG Grid Community CSS and JS -->
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css" />
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css" />
+  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
 
-    <!-- html2pdf.js for PDF Export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-  </head>
-  <body class="flex flex-col items-center min-h-screen bg-[#FBF5F3] text-black">
+  <!-- PapaParse for CSV parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
-    <!-- Container with padding and centering -->
-    <div class="container mx-auto px-6 py-4 flex flex-col items-center justify-center">
-      
-      <!-- Header Container -->
-      <div class="header-container flex items-center justify-center gap-2 w-full max-w-5xl mt-8 mb-6 px-4 relative">
-        <h1 class="text-4xl font-bold text-[#0A2463]">Build Your Own Coverage Maps</h1>
-        
-        <!-- Info Icon (i) just to the right of H1 -->
-        <div class="relative flex items-center group">
-          <span class="cursor-pointer text-xl text-gray-800">ℹ️</span>
-          <div class="absolute hidden group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-2 left-full ml-2 whitespace-normal w-48">
+  <!-- dom-to-image for PNG and SVG export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
+
+  <!-- html2pdf.js for PDF Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+</head>
+
+<body class="flex flex-col items-center min-h-screen bg-[#FBF5F3] text-black">
+
+  <!-- Header Container -->
+  <div class="header-div w-full flex justify-center pt-1 pb-1">
+    <div class="header-container flex items-center justify-between gap-2 w-full max-w-5xl px-4 relative">
+
+      <!-- Info Icon (i) just to the right of H1 -->
+      <div class="flex items-center justify-between flex-1">
+        <div class="flex flex-col items-center">
+          <img class="logo" src="./logo3.png" alt="..." />
+          <h1 class="text-shadow text-white text-lg font-bold sm:text-3xl "><span>Coverage<br />Maps</span></h1>
+        </div>
+        <div>
+          <h1 class="text-sm sm:text-2xl font-bold text-white text-shadow">Build Your Own Coverage Maps</h1>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container with padding and centering -->
+  <div class="container mx-auto max-w-5xl w-full flex pt-6 flex-col items-center justify-center">
+
+    <div class="guide-instra mb-4 w-full">
+      <ul class="m-d expand-list">
+        <li data-md-content>
+          <label class="flex items-center gap-1" name="tab" for="tab1" tabindex="-1" class="tab_lab" role="tab">
+            <span class="font-bold guide-title">Help</span>
+            <span>
+              <svg viewBox="0 0 24 24" width="32px" height="32px" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M14.77,5.87a1,1,0,0,0,1.36-.37A1,1,0,0,1,18,6a1,1,0,0,1-1,1,1,1,0,0,0,0,2,3,3,0,1,0-2.6-4.5A1,1,0,0,0,14.77,5.87ZM19.07,13a1,1,0,0,0-1.12.86A7,7,0,0,1,11,20H5.41l.65-.65a1,1,0,0,0,0-1.41A7,7,0,0,1,11,6a1,1,0,0,0,0-2A9,9,0,0,0,4,18.61L2.29,20.29a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h8a9,9,0,0,0,8.93-7.87A1,1,0,0,0,19.07,13Zm-1.69-2.93A1,1,0,0,0,16.8,10l-.18.06-.18.09-.15.13a1,1,0,0,0-.21.32A.84.84,0,0,0,16,11a1,1,0,0,0,.07.39,1,1,0,0,0,.22.32A1,1,0,0,0,17,12a1,1,0,0,0,1-1,.84.84,0,0,0-.08-.38,1.07,1.07,0,0,0-.54-.54Z"
+                  fill="#444" />
+              </svg>
+            </span>
+          </label>
+
+          <input type="checkbox" class="tab" id="tab1" tabindex="0" />
+          <div class="content">
             <p class="font-bold">Instructions:</p>
             <ul class="list-disc list-inside">
               <li>Enter the name and state in the table.</li>
@@ -42,59 +77,94 @@
               <li>Load a CSV file for bulk entries.</li>
               <li>Use 'Export to PDF' to save the map and title.</li>
             </ul>
-            <!-- Tooltip arrow -->
-            <div class="absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2">
-              <div class="border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-gray-800"></div>
-            </div>
           </div>
-        </div>
-      </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="max-w-5xl w-full rounded-md p-6 bg-white box-shadow">
 
       <!-- AG Grid Container -->
-      <div id="grid-container" class="ag-theme-alpine w-full max-w-5xl h-96 mb-6 shadow-md rounded-lg overflow-auto border border-gray-200"></div>
+      <div id="grid-container"
+        class="ag-theme-alpine w-full max-w-5xl h-96 mb-6 shadow-md rounded-lg overflow-auto box-shadow">
+      </div>
 
       <!-- Row Buttons -->
-      <div class="row-buttons flex gap-4 mb-6">
-        <button id="addRowButton" class="py-2 px-6 rounded-lg shadow transition bg-[#379634] text-white hover:bg-[#2C7C29]">Add Row</button>
-        <button id="deleteRowButton" class="bg-red-500 text-white py-2 px-6 rounded-lg shadow hover:bg-red-600 transition">Delete Selected Row</button>
-        <button id="clearTableButton" class="py-2 px-6 rounded-lg shadow transition bg-[#0A3200] text-white hover:bg-[#073100]">Clear Table</button>
+      <div class="row-buttons flex justify-center gap-4 mb-6">
+        <button id="addRowButton"
+          class="py-2 px-6 rounded shadow transition bg-blue-500 text-white hover:bg-blue-600">Add Row</button>
+        <button id="deleteRowButton"
+          class="bg-red-500 text-white py-2 px-6 rounded shadow hover:bg-red-600 transition">Delete Selected
+          Row</button>
+        <button id="clearTableButton"
+          class="py-2 px-6 rounded shadow transition bg-gray-500 text-white hover:bg-gray-600">Clear Table</button>
       </div>
 
       <!-- Actions Wrapper -->
-      <div class="actions-wrapper flex gap-6 mb-4 items-center">
+      <div class="actions-wrapper flex p-3 bg-[#eeeeee] flex-col rounded-lg gap-6 mb-4">
         <div>
-          <input type="file" id="csvFileInput" accept=".csv" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-100 focus:outline-none">
+          <input type="file" id="csvFileInput" accept=".csv"
+            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-100 focus:outline-none">
           <p id="csvNote" class="mt-1 text-xs text-gray-500">CSV format - match columns above</p>
         </div>
-        <button id="loadCsvButton" class="py-2 px-6 rounded-lg shadow transition bg-[#379634] text-white hover:bg-[#2C7C29]">Load CSV Data</button>
+        <button id="loadCsvButton"
+          class="py-2 px-6 rounded shadow max-w-[155px] transition bg-blue-500 text-white hover:bg-blue-600">Load
+          CSV
+          Data</button>
       </div>
 
       <!-- Generate and Export Buttons -->
-      <div class="actions-wrapper flex gap-4 mb-8">
-        <button id="generateButton" class="py-2 px-6 rounded-lg shadow transition bg-[#379634] text-white hover:bg-[#2C7C29]">Generate Coverage Map</button>
-        <button id="exportButton" class="py-2 px-6 rounded-lg shadow transition bg-[#379634] text-white hover:bg-[#2C7C29]">Export to PDF</button>
+      <div class="actions-wrapper justify-center p-2 rounded-lg bg-[#eeeeee] flex gap-4 mb-4">
+        <button id="generateButton"
+          class="py-2 px-6 rounded shadow transition bg-[#069163] text-white hover:bg-[#2C7C29]">Generate Coverage
+          Map</button>
       </div>
 
-      <!-- Title Field for Coverage Map -->
-      <div class="mb-4 w-full max-w-5xl">
-        <label for="mapTitle" class="block text-sm font-medium text-black">Coverage Map Title</label>
-        <input type="text" id="mapTitle" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter the title for your map">
-      </div>
 
-      <!-- Add Title Button -->
-      <div class="actions-wrapper flex gap-4 mb-4">
-        <button id="addTitleButton" class="py-2 px-6 rounded-lg shadow transition bg-[#FFBF00] text-black hover:bg-[#E6A800]">Add Title</button>
-      </div>
 
       <!-- Title Display (This will show the map title) -->
       <div id="mapTitleContainer" class="w-full max-w-5xl text-center text-xl font-bold text-black mb-4"></div>
 
       <!-- US Geo Map Container -->
-      <div id="map_div" class="w-full max-w-5xl h-[500px] bg-white rounded-lg shadow-md border border-gray-200 p-6"></div>
+      <div id="map_div"
+        class="w-full max-w-5xl h-[500px] bg-white rounded-lg shadow-md border border-gray-200 p-6 mb-4">
+      </div>
 
-      <footer class="mt-12 text-sm text-gray-800">Copyright 2024</footer>
+      <!-- Title Field for Coverage Map -->
+      <div class="mb-4 flex gap-3 w-full justify-center max-w-5xl">
+        <input type="text" id="mapTitle"
+          class="flex-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          placeholder="Enter the title for your map">
+
+        <button id="addTitleButton"
+          class="px-4 rounded text-sm shadow transition bg-[#10b981] text-white hover:bg-[#147756]">Add
+          Title</button>
+        <button id="clearTitleButton"
+          class="px-4 rounded text-sm shadow transition bg-red-500 text-white hover:bg-red-600">Clear Title</button>
+      </div>
+
+      <!-- Generate and Export Buttons -->
+      <div class="actions-wrapper justify-center p-2 rounded-lg bg-[#eeeeee] flex gap-4 mb-4">
+        <button id="exportPngButton"
+          class="py-2 px-6 rounded shadow transition bg-red-500 text-white hover:bg-red-600">Export to
+          PNG</button>
+        <button id="exportSvgButton"
+          class="py-2 px-6 rounded shadow transition bg-blue-500 text-white hover:bg-blue-600">Export to
+          SVG</button>
+        <button id="exportButton"
+          class="py-2 px-6 rounded shadow transition bg-gray-500 text-white hover:bg-gray-600">Export to
+          PDF</button>
+      </div>
+
     </div>
 
-    <script src="scripts.js"></script> <!-- External JS -->
-  </body>
+
+  </div>
+  <footer class="mt-12 text-lg sm:text-2xl text-center bg-[#133513] w-full p-6 text-white text-gray-800 text-shadow">
+    Copyright 2024
+  </footer>
+
+  <script src="scripts.js"></script> <!-- External JS -->
+</body>
+
 </html>
