@@ -179,8 +179,6 @@ document.addEventListener("DOMContentLoaded", function () {
       // Append the exportContent to the body
       document.body.appendChild(exportContent);
 
-    console.log(exportContent);
-
     setTimeout(() => {
       domtoimage.toPng(exportContent)
         .then(function (dataUrl) {
@@ -208,6 +206,8 @@ document.addEventListener("DOMContentLoaded", function () {
     exportContent.appendChild(mapTitleContainer.cloneNode(true));
     exportContent.appendChild(mapDiv.cloneNode(true));
     
+     // Append the exportContent to the body
+     document.body.appendChild(exportContent);
 
     setTimeout(() => {
       domtoimage.toSvg(exportContent)
@@ -219,8 +219,11 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(function (error) {
             console.error('oops, something went wrong!', error);
-        });
-    }, 500);
+        })
+        .finally(() => {
+          document.body.removeChild(exportContent);
+        })
+    }, 1000);
     
   });
 
