@@ -5,3 +5,94 @@ h1 {
     font-family: "Source Sans Pro", sans-serif;
     font-weight: normal;
 }
+
+.header-div {
+    position: sticky;
+    top: 0px;
+    background-color: #133513;
+    z-index: 20;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.logo {
+    width: 100px;
+}
+
+.text-shadow {
+    text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.8);
+}
+
+.box-shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.guide-instra .m-d.expand-list{
+    margin: 0;
+    padding: 0px 15px;
+}
+.guide-instra .m-d.expand-list > li{
+    list-style-type: none;
+    padding: 15px 0;
+    font-size: 20px;
+    position: relative;
+}
+.guide-instra .m-d label {
+    border-bottom: 1px solid #777;
+    padding-bottom: 15px;
+}
+.guide-instra .m-d label[class^="tab"]:hover{
+    cursor: pointer;
+}
+.guide-instra .m-d input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.guide-instra .m-d input[class^="tab"]{
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    top: 0; 
+}
+.guide-instra .m-d input[class^="tab"]:hover{
+        cursor: pointer;
+    }
+    .guide-instra .m-d label[class^="tab"]{
+    font-weight: bold;
+}
+.guide-instra .m-d .content{
+    height: auto;
+    max-height: 0;
+    width: fit-content;
+    padding-left: 20px;
+    overflow: hidden;
+    transform: translateY(20px);
+    transition: all 180ms ease-in-out 0ms; 
+}
+
+.guide-instra   .m-d li[data-md-content=""] input[class^="tab"]:checked ~ .content{
+    max-height: 1000px;
+    transition: all 250ms ease-in-out 0ms;
+}
+.guide-instra .m-d input[class^="tab"]:checked ~ .content{
+    margin-bottom: 20px;
+}
+
+.guide-title {
+    font-size: 24px;
+    color: #444;
+}
+
+.guide-instra .content li {
+    color: #555;
+}
+
+
+.guide-instra .content p {
+    color: #555;
+}
+
+.ag-root-wrapper-body {
+    overflow: hidden;
+}
