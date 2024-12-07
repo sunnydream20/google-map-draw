@@ -50,10 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
  
   // Function to draw an empty map initially
   function drawEmptyMap() {
-    var data = google.visualization.arrayToDataTable([
-      // ['State', 'Coverage'],
-      // ['US', 0]
-    ]);
+    var data = google.visualization.arrayToDataTable([]);
 
     var options = {
       region: 'US',
@@ -64,6 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
       colorAxis: { colors: ['#f0f4f8', '#2b6cb0'] }
     };
 
+    
+
     var chart = new google.visualization.GeoChart(document.getElementById('map_div'));
     chart.draw(data, options);
   }
@@ -72,39 +71,65 @@ document.addEventListener("DOMContentLoaded", function () {
   function drawMap(mapData, personColors) {
     var rowData = [];
     gridOptions.api.forEachNode((node) => rowData.push(node.data));
-    var data = google.visualization.arrayToDataTable(mapData);
 
     const coverageCount = {};
+    const userCount = {};
         // Prepare the map data
     // const mapData = [['State', 'Coverage']];
     rowData.forEach(row => {
       console.log(row.Name)
         if (row.State) {
           console.log(getColor(row.Name))
-            coverageCount[row.State] = getColor(row.Name) // Increment 
+            coverageCount[row.State] = getColor(row.Name); // Increment 
+            userCount[row.State] = row.Name;
         }
     });
 
-    console.log(coverageCount)
-
+    
     mapData = [['State', 'Coverage']];
     for (const state in coverageCount) {
-        mapData.push([state, coverageCount[state]]);
+      mapData.push([state, coverageCount[state]]);
     }
+    console.log(mapData)
 
     var options = {
       region: 'US',
       displayMode: 'regions',
       resolution: 'provinces',
-      // colorAxis: { colors: Object.values(personColors) },
       tooltip: { isHtml: true },
       legend: 'none',
-      projection: 'mercator'
+      projection: 'mercator',
+      colorAxis:  {minValue: 0, maxValue: 49,  colors:[
+        '#FF5733', '#33FF57', '#3357FF', '#F1C40F', '#2ECC71',
+        '#3498DB', '#9B59B6', '#E74C3C', '#F39C12', '#16A085',
+        '#27AE60', '#2980B9', '#8E44AD', '#2C3E50', '#D35400',
+        '#F39C12', '#C0392B', '#1ABC9C', '#D1C4E9', '#FFB74D',
+        '#B2FF59', '#FF8A65', '#FFD54F', '#4DB6AC', '#FFAB40',
+        '#FF6F61', '#6D4C41', '#8E24AA', '#6F9FD8', '#FFEE58',
+        '#FF5252', '#EA80FC', '#FF4081', '#F57F17', '#00ACC1',
+        '#7E57C2', '#FFCA28', '#8D6E63', '#616161', '#00897B',
+        '#D32F2F', '#FBC02D', '#1976D2', '#388E3C', '#7B1FA2',
+        '#C2185B', '#512DA8', '#0288D1', '#D32F2F', '#FBC02D',
+        '#FF7043', '#F57C00', '#00897B', '#7B1FA2', '#5D4037'
+    ]},
     };
 
     var data = google.visualization.arrayToDataTable(mapData);
+
+    var view = new google.visualization.DataView(data);
+view.setColumns([0, {
+type: 'number',
+calc: function (dt, row) {
+  console.log(dt.getValue(row, 0))
+    return {
+        v: dt.getValue(row, 1),
+        f: userCount[dt.getValue(row, 0)],
+    }
+}
+}]);
+    
     var chart = new google.visualization.GeoChart(document.getElementById('map_div'));
-    chart.draw(data, options);
+    chart.draw(view, options);
   }
 
     // Function to generate a unique color for each user
