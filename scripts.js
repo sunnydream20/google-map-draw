@@ -78,22 +78,25 @@ document.addEventListener("DOMContentLoaded", function () {
         // Prepare the map data
     // const mapData = [['State', 'Coverage']];
     rowData.forEach(row => {
+      console.log(row.Name)
         if (row.State) {
-            coverageCount[row.State] = (coverageCount[row.State] || 0) + 1; // Increment 
+          console.log(getColor(row.Name))
+            coverageCount[row.State] = getColor(row.Name) // Increment 
         }
     });
+
+    console.log(coverageCount)
 
     mapData = [['State', 'Coverage']];
     for (const state in coverageCount) {
         mapData.push([state, coverageCount[state]]);
     }
 
-
     var options = {
       region: 'US',
       displayMode: 'regions',
       resolution: 'provinces',
-      colorAxis: { colors: Object.values(personColors) },
+      // colorAxis: { colors: Object.values(personColors) },
       tooltip: { isHtml: true },
       legend: 'none',
       projection: 'mercator'
@@ -103,6 +106,16 @@ document.addEventListener("DOMContentLoaded", function () {
     var chart = new google.visualization.GeoChart(document.getElementById('map_div'));
     chart.draw(data, options);
   }
+
+    // Function to generate a unique color for each user
+function getColor(name) {
+  const colors = [
+      1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51
+  ];
+  // Simple hash function to create a consistent index for the name
+  const hash = Array.from(name).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return colors[hash % colors.length]; // Loop through colors based on name hash
+}
 
   // Generate the map when 'Generate Coverage Map' is clicked
   document.getElementById("generateButton").addEventListener("click", function () {
@@ -144,14 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
       titleContainer.style.display = "none";
     }
   });
-
-  // Function to generate a unique color for each person
-  function getColor(index) {
-    const colors = [
-      "#718096", "#A0AEC0", "#2B6CB0", "#63B3ED", "#F56565", "#ED8936", "#ECC94B", "#48BB78", "#38A169"
-    ];
-    return colors[index % colors.length];
-  }
 
   // Export to PDF functionality
   document.getElementById("exportButton").addEventListener("click", function () {
@@ -259,6 +264,10 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
   });
+
+
+
+
 
 });
 
